@@ -29,6 +29,10 @@ class Server(Chat_pb2_grpc.ChatServicer):
             ping = 'Ni un Poco '
         )
 
+    def ReciveMessage(self,context):
+        while True:
+            pass
+
 if __name__ == "__main__":
     #Se corre server con n threads
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

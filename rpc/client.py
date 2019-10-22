@@ -1,13 +1,21 @@
 import grpc
 import Chat_pb2,Chat_pb2_grpc
-
+import threading
 
 class Client():
     def __init__(self,nombre):
+        self.nombre = nombre 
         self.channel = grpc.insecure_channel('localhost:8080')
         self.stub = Chat_pb2_grpc.ChatStub(self.channel)
         self.id = self.stub.Connection(Chat_pb2.Nombre(nombre = 'nombre')).id # se le pide al server que nos de un id 
-        print(f'El id que me dio el server es {self.id}')
+        self.my_user = Chat_pb2.User(
+            id = self.id,
+            nombre = self.nombre 
+        )
+        #se crea thread para que escuche los mensajes entrantes 
+        threading.Thread(target=self.ReciveMessage).start()
+
+
     def Ping(self):
         respuesta = self.stub.Ping(
         Chat_pb2.Pong(
@@ -20,10 +28,14 @@ class Client():
     def SendMessage(self,contenido,destino):
         try:
             self.stub.SendMessage(Chat_pb2.Message(
+                emisor = self.my_user,
                 contenido = "miedo potter ? ",
                 timestamp = "intento",
                 id = 3,
-                receptor = "Mi mama"
+                receptor = Chat_pb2.User(
+                    id = 3 ,#que aca sea estilo destino.id
+                    nombre = 'jiji' #destino.nombre o algo asi 
+                )
             ))
         except grpc.RpcError as err:
             print(err)

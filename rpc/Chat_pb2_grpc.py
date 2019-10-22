@@ -29,6 +29,11 @@ class ChatStub(object):
         request_serializer=Chat__pb2.Pong.SerializeToString,
         response_deserializer=Chat__pb2.Pong.FromString,
         )
+    self.Connection = channel.unary_unary(
+        '/Chat/Connection',
+        request_serializer=Chat__pb2.Nombre.SerializeToString,
+        response_deserializer=Chat__pb2.Id.FromString,
+        )
 
 
 class ChatServicer(object):
@@ -56,6 +61,13 @@ class ChatServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def Connection(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_ChatServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -73,6 +85,11 @@ def add_ChatServicer_to_server(servicer, server):
           servicer.Ping,
           request_deserializer=Chat__pb2.Pong.FromString,
           response_serializer=Chat__pb2.Pong.SerializeToString,
+      ),
+      'Connection': grpc.unary_unary_rpc_method_handler(
+          servicer.Connection,
+          request_deserializer=Chat__pb2.Nombre.FromString,
+          response_serializer=Chat__pb2.Id.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

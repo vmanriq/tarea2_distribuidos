@@ -2,6 +2,12 @@ syntax = "proto3";
 //import "google/protobuf/timestamp.proto";
 //import "google/protobuf/empty.proto";
 //Usuario
+message Nombre {
+    string nombre = 1;
+}
+message Id{
+    int32 id = 2;
+}
 message User{
     int32 id = 1;
     string nombre = 2;
@@ -12,10 +18,12 @@ message UserList{
 }
 //Mensaje 
 message Message{
+    User emisor = 1; //quien envia el mensaje 
+
     string contenido  = 2;
-    string  timestamp = 3;
-    int32 id = 4;
-    string receptor = 5;
+    string  timestamp = 3; //tambien ver esto, quien pone la estampilla ? 
+    //int32 id = 4; // el id solo tiene sentido para el server (?)
+    User receptor = 5; //quien recibe el mensaje 
 }
 message Pong{
     string ping = 1;
@@ -27,4 +35,5 @@ service Chat{
     rpc SendMessage(Message) returns (Empty);
     rpc ReciveMessage(Empty) returns (stream Message);
     rpc Ping (Pong) returns (Pong);
+    rpc Connection(Nombre) returns (Id);
 }

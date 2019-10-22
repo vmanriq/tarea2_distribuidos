@@ -1,6 +1,6 @@
 syntax = "proto3";
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
+//import "google/protobuf/timestamp.proto";
+//import "google/protobuf/empty.proto";
 //Usuario
 message User{
     int32 id = 1;
@@ -13,13 +13,18 @@ message UserList{
 //Mensaje 
 message Message{
     string contenido  = 2;
-    google.protobuf.Timestamp timestamp = 3;
+    string  timestamp = 3;
     int32 id = 4;
-    User receptor = 5;
+    string receptor = 5;
+}
+message Pong{
+    string ping = 1;
 }
 
+message Empty {}
 
 service Chat{
-    rpc SendMessage(Message) returns (google.protobuf.Empty);
-    rpc ReciveMessage(google.protobuf.Empty) returns (stream Message);
+    rpc SendMessage(Message) returns (Empty);
+    rpc ReciveMessage(Empty) returns (stream Message);
+    rpc Ping (Pong) returns (Pong);
 }

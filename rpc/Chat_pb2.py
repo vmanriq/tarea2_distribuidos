@@ -13,8 +13,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -22,9 +20,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nChat.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"\"\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06nombre\x18\x02 \x01(\t\"\x1f\n\x08UserList\x12\x13\n\x04user\x18\x01 \x03(\x0b\x32\x05.User\"p\n\x07Message\x12\x11\n\tcontenido\x18\x02 \x01(\t\x12-\n\ttimestamp\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\n\n\x02id\x18\x04 \x01(\x05\x12\x17\n\x08receptor\x18\x05 \x01(\x0b\x32\x05.User2l\n\x04\x43hat\x12/\n\x0bSendMessage\x12\x08.Message\x1a\x16.google.protobuf.Empty\x12\x33\n\rReciveMessage\x12\x16.google.protobuf.Empty\x1a\x08.Message0\x01\x62\x06proto3')
-  ,
-  dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
+  serialized_pb=_b('\n\nChat.proto\"\"\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06nombre\x18\x02 \x01(\t\"\x1f\n\x08UserList\x12\x13\n\x04user\x18\x01 \x03(\x0b\x32\x05.User\"M\n\x07Message\x12\x11\n\tcontenido\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\t\x12\n\n\x02id\x18\x04 \x01(\x05\x12\x10\n\x08receptor\x18\x05 \x01(\t\"\x14\n\x04Pong\x12\x0c\n\x04ping\x18\x01 \x01(\t\"\x07\n\x05\x45mpty2b\n\x04\x43hat\x12\x1f\n\x0bSendMessage\x12\x08.Message\x1a\x06.Empty\x12#\n\rReciveMessage\x12\x06.Empty\x1a\x08.Message0\x01\x12\x14\n\x04Ping\x12\x05.Pong\x1a\x05.Pongb\x06proto3')
+)
 
 
 
@@ -62,8 +59,8 @@ _USER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=76,
-  serialized_end=110,
+  serialized_start=14,
+  serialized_end=48,
 )
 
 
@@ -93,8 +90,8 @@ _USERLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=112,
-  serialized_end=143,
+  serialized_start=50,
+  serialized_end=81,
 )
 
 
@@ -114,8 +111,8 @@ _MESSAGE = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='timestamp', full_name='Message.timestamp', index=1,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -128,8 +125,8 @@ _MESSAGE = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='receptor', full_name='Message.receptor', index=3,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -145,16 +142,71 @@ _MESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=145,
-  serialized_end=257,
+  serialized_start=83,
+  serialized_end=160,
+)
+
+
+_PONG = _descriptor.Descriptor(
+  name='Pong',
+  full_name='Pong',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='ping', full_name='Pong.ping', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=162,
+  serialized_end=182,
+)
+
+
+_EMPTY = _descriptor.Descriptor(
+  name='Empty',
+  full_name='Empty',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=184,
+  serialized_end=191,
 )
 
 _USERLIST.fields_by_name['user'].message_type = _USER
-_MESSAGE.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_MESSAGE.fields_by_name['receptor'].message_type = _USER
 DESCRIPTOR.message_types_by_name['User'] = _USER
 DESCRIPTOR.message_types_by_name['UserList'] = _USERLIST
 DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
+DESCRIPTOR.message_types_by_name['Pong'] = _PONG
+DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 User = _reflection.GeneratedProtocolMessageType('User', (_message.Message,), {
@@ -178,6 +230,20 @@ Message = _reflection.GeneratedProtocolMessageType('Message', (_message.Message,
   })
 _sym_db.RegisterMessage(Message)
 
+Pong = _reflection.GeneratedProtocolMessageType('Pong', (_message.Message,), {
+  'DESCRIPTOR' : _PONG,
+  '__module__' : 'Chat_pb2'
+  # @@protoc_insertion_point(class_scope:Pong)
+  })
+_sym_db.RegisterMessage(Pong)
+
+Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
+  'DESCRIPTOR' : _EMPTY,
+  '__module__' : 'Chat_pb2'
+  # @@protoc_insertion_point(class_scope:Empty)
+  })
+_sym_db.RegisterMessage(Empty)
+
 
 
 _CHAT = _descriptor.ServiceDescriptor(
@@ -186,8 +252,8 @@ _CHAT = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=259,
-  serialized_end=367,
+  serialized_start=193,
+  serialized_end=291,
   methods=[
   _descriptor.MethodDescriptor(
     name='SendMessage',
@@ -195,7 +261,7 @@ _CHAT = _descriptor.ServiceDescriptor(
     index=0,
     containing_service=None,
     input_type=_MESSAGE,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    output_type=_EMPTY,
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
@@ -203,8 +269,17 @@ _CHAT = _descriptor.ServiceDescriptor(
     full_name='Chat.ReciveMessage',
     index=1,
     containing_service=None,
-    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    input_type=_EMPTY,
     output_type=_MESSAGE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Ping',
+    full_name='Chat.Ping',
+    index=2,
+    containing_service=None,
+    input_type=_PONG,
+    output_type=_PONG,
     serialized_options=None,
   ),
 ])

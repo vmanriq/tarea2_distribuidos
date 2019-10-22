@@ -2,7 +2,6 @@
 import grpc
 
 import Chat_pb2 as Chat__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class ChatStub(object):
@@ -18,12 +17,17 @@ class ChatStub(object):
     self.SendMessage = channel.unary_unary(
         '/Chat/SendMessage',
         request_serializer=Chat__pb2.Message.SerializeToString,
-        response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        response_deserializer=Chat__pb2.Empty.FromString,
         )
     self.ReciveMessage = channel.unary_stream(
         '/Chat/ReciveMessage',
-        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        request_serializer=Chat__pb2.Empty.SerializeToString,
         response_deserializer=Chat__pb2.Message.FromString,
+        )
+    self.Ping = channel.unary_unary(
+        '/Chat/Ping',
+        request_serializer=Chat__pb2.Pong.SerializeToString,
+        response_deserializer=Chat__pb2.Pong.FromString,
         )
 
 
@@ -45,18 +49,30 @@ class ChatServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def Ping(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_ChatServicer_to_server(servicer, server):
   rpc_method_handlers = {
       'SendMessage': grpc.unary_unary_rpc_method_handler(
           servicer.SendMessage,
           request_deserializer=Chat__pb2.Message.FromString,
-          response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+          response_serializer=Chat__pb2.Empty.SerializeToString,
       ),
       'ReciveMessage': grpc.unary_stream_rpc_method_handler(
           servicer.ReciveMessage,
-          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+          request_deserializer=Chat__pb2.Empty.FromString,
           response_serializer=Chat__pb2.Message.SerializeToString,
+      ),
+      'Ping': grpc.unary_unary_rpc_method_handler(
+          servicer.Ping,
+          request_deserializer=Chat__pb2.Pong.FromString,
+          response_serializer=Chat__pb2.Pong.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

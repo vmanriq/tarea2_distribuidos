@@ -1,20 +1,25 @@
 syntax = "proto3";
-
-message Client{
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+//Usuario
+message User{
     int32 id = 1;
     string nombre = 2;
 }
-
+//Lista de Usuarios
+message UserList{
+    repeated User user = 1;
+}
+//Mensaje 
 message Message{
-    Client emisor = 1;
     string contenido  = 2;
-    string timestamp = 3;
+    google.protobuf.Timestamp timestamp = 3;
     int32 id = 4;
-    Client receptor = 5;
+    User receptor = 5;
 }
 
-message Empty {}
 
 service Chat{
-    rpc SendMessage(Message) return (Empty){}
+    rpc SendMessage(Message) returns (google.protobuf.Empty);
+    rpc ReciveMessage(google.protobuf.Empty) returns (stream Message);
 }

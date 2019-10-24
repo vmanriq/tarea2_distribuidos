@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nChat.proto\"\x18\n\x06Nombre\x12\x0e\n\x06nombre\x18\x01 \x01(\t\"\x10\n\x02Id\x12\n\n\x02id\x18\x02 \x01(\x05\"\"\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06nombre\x18\x02 \x01(\t\"\x1f\n\x08UserList\x12\x13\n\x04user\x18\x01 \x03(\x0b\x32\x05.User\"_\n\x07Message\x12\x15\n\x06\x65misor\x18\x01 \x01(\x0b\x32\x05.User\x12\x11\n\tcontenido\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\t\x12\x17\n\x08receptor\x18\x05 \x01(\x0b\x32\x05.User\"\x14\n\x04Pong\x12\x0c\n\x04ping\x18\x01 \x01(\t\"\x07\n\x05\x45mpty2~\n\x04\x43hat\x12\x1f\n\x0bSendMessage\x12\x08.Message\x1a\x06.Empty\x12#\n\rReciveMessage\x12\x06.Empty\x1a\x08.Message0\x01\x12\x14\n\x04Ping\x12\x05.Pong\x1a\x05.Pong\x12\x1a\n\nConnection\x12\x07.Nombre\x1a\x03.Idb\x06proto3')
+  serialized_pb=_b('\n\nChat.proto\"\x18\n\x06Nombre\x12\x0e\n\x06nombre\x18\x01 \x01(\t\"\x10\n\x02Id\x12\n\n\x02id\x18\x02 \x01(\x05\"\"\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06nombre\x18\x02 \x01(\t\"\x1f\n\x08UserList\x12\x13\n\x04user\x18\x01 \x03(\x0b\x32\x05.User\"_\n\x07Message\x12\x15\n\x06\x65misor\x18\x01 \x01(\x0b\x32\x05.User\x12\x11\n\tcontenido\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\t\x12\x17\n\x08receptor\x18\x05 \x01(\x0b\x32\x05.User\"\x14\n\x04Pong\x12\x0c\n\x04ping\x18\x01 \x01(\t\")\n\x06\x45stado\x12\x0e\n\x06\x65stado\x18\x01 \x01(\x08\x12\x0f\n\x07\x64\x65talle\x18\x02 \x01(\t\"\x07\n\x05\x45mpty2|\n\x04\x43hat\x12 \n\x0bSendMessage\x12\x08.Message\x1a\x07.Estado\x12 \n\rReciveMessage\x12\x03.Id\x1a\x08.Message0\x01\x12\x14\n\x04Ping\x12\x05.Pong\x1a\x05.Pong\x12\x1a\n\nConnection\x12\x07.Nombre\x1a\x03.Idb\x06proto3')
 )
 
 
@@ -240,6 +240,44 @@ _PONG = _descriptor.Descriptor(
 )
 
 
+_ESTADO = _descriptor.Descriptor(
+  name='Estado',
+  full_name='Estado',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='estado', full_name='Estado.estado', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='detalle', full_name='Estado.detalle', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=246,
+  serialized_end=287,
+)
+
+
 _EMPTY = _descriptor.Descriptor(
   name='Empty',
   full_name='Empty',
@@ -259,8 +297,8 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=246,
-  serialized_end=253,
+  serialized_start=289,
+  serialized_end=296,
 )
 
 _USERLIST.fields_by_name['user'].message_type = _USER
@@ -272,6 +310,7 @@ DESCRIPTOR.message_types_by_name['User'] = _USER
 DESCRIPTOR.message_types_by_name['UserList'] = _USERLIST
 DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
 DESCRIPTOR.message_types_by_name['Pong'] = _PONG
+DESCRIPTOR.message_types_by_name['Estado'] = _ESTADO
 DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -317,6 +356,13 @@ Pong = _reflection.GeneratedProtocolMessageType('Pong', (_message.Message,), {
   })
 _sym_db.RegisterMessage(Pong)
 
+Estado = _reflection.GeneratedProtocolMessageType('Estado', (_message.Message,), {
+  'DESCRIPTOR' : _ESTADO,
+  '__module__' : 'Chat_pb2'
+  # @@protoc_insertion_point(class_scope:Estado)
+  })
+_sym_db.RegisterMessage(Estado)
+
 Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
   'DESCRIPTOR' : _EMPTY,
   '__module__' : 'Chat_pb2'
@@ -332,8 +378,8 @@ _CHAT = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=255,
-  serialized_end=381,
+  serialized_start=298,
+  serialized_end=422,
   methods=[
   _descriptor.MethodDescriptor(
     name='SendMessage',
@@ -341,7 +387,7 @@ _CHAT = _descriptor.ServiceDescriptor(
     index=0,
     containing_service=None,
     input_type=_MESSAGE,
-    output_type=_EMPTY,
+    output_type=_ESTADO,
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
@@ -349,7 +395,7 @@ _CHAT = _descriptor.ServiceDescriptor(
     full_name='Chat.ReciveMessage',
     index=1,
     containing_service=None,
-    input_type=_EMPTY,
+    input_type=_ID,
     output_type=_MESSAGE,
     serialized_options=None,
   ),

@@ -17,11 +17,11 @@ class ChatStub(object):
     self.SendMessage = channel.unary_unary(
         '/Chat/SendMessage',
         request_serializer=Chat__pb2.Message.SerializeToString,
-        response_deserializer=Chat__pb2.Empty.FromString,
+        response_deserializer=Chat__pb2.Estado.FromString,
         )
     self.ReciveMessage = channel.unary_stream(
         '/Chat/ReciveMessage',
-        request_serializer=Chat__pb2.Empty.SerializeToString,
+        request_serializer=Chat__pb2.Id.SerializeToString,
         response_deserializer=Chat__pb2.Message.FromString,
         )
     self.Ping = channel.unary_unary(
@@ -74,11 +74,11 @@ def add_ChatServicer_to_server(servicer, server):
       'SendMessage': grpc.unary_unary_rpc_method_handler(
           servicer.SendMessage,
           request_deserializer=Chat__pb2.Message.FromString,
-          response_serializer=Chat__pb2.Empty.SerializeToString,
+          response_serializer=Chat__pb2.Estado.SerializeToString,
       ),
       'ReciveMessage': grpc.unary_stream_rpc_method_handler(
           servicer.ReciveMessage,
-          request_deserializer=Chat__pb2.Empty.FromString,
+          request_deserializer=Chat__pb2.Id.FromString,
           response_serializer=Chat__pb2.Message.SerializeToString,
       ),
       'Ping': grpc.unary_unary_rpc_method_handler(

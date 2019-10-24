@@ -11,19 +11,35 @@ class Server(Chat_pb2_grpc.ChatServicer):
         self.user_id = 0
         self.message_id = 0
         self.enviados = {}
+        self.recibidos = {}
         self.nombre = []
+
     def Connection(self,request,context):
         print(f'Responde el thread{threading.get_ident()}')
+        
         self.nombre.append(request.nombre) # se obtiene el nombre de la persona que hizo la request, supongo que despue slo ssamos ? 
         new_id = self.user_id
         self.enviados[new_id] = [] # se crea llave = id , valor = lista de mensajes enviados  
-        self.user_id+=1
+        self.recibidos[new_id] = [] #se crea lista para mensaje recibidos
+
+        self.user_id+=1 #se deberia usar locks aca (?)
+        
+
         return Chat_pb2.Id(id = new_id)
     
     def SendMessage(self,message,context):
-        contenido = message.contenido
-        print(f'El contendio del mensaje es: {contenido }')
-        print(f'Este es mi nombre: {self.nombre}')
+        flag = False 
+        respuesta = Chat_pb2.Estado(
+            estado = flag ,
+            detalle = f'El mensaje a {message.receptor} no pudo se entregado'
+        )
+        if message.receptor.id > self.user_id and message.receptor.nombre not in self.nombre: #el usuario que iba a ser el enviado el mensaje no existe 
+            return respuesta
+
+        self.recibidos[message.receptor.id].append(message)
+        self.enviados[message.emisor.id].append(message)
+
+        print(f'El usuario {message.emisor.nombre} envia mensaje a {message.receptor.nombre}')
         return Chat_pb2.Empty()
 
     def Ping(self,pong,context):
@@ -33,17 +49,17 @@ class Server(Chat_pb2_grpc.ChatServicer):
             ping = 'Ni un Poco '
         )
 
-    def ReciveMessage(self,request_iterator,context):
-        
+    def ReciveMessage(self,id,context):
+        ID = id.id
         while True:
-            time.sleep(10)
-            yield Chat_pb2.Message(
-                contenido = "wena"
-            )
+            while len  (self.recibidos[ID]) != 0:
+                yield self.recibidos[ID].pop(0) 
+            
 
 if __name__ == "__main__":
     #Se corre server con n threads
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    print("nueva hebra ")
     #se agrega la clase al servidor
     Chat_pb2_grpc.add_ChatServicer_to_server(Server(),server)
     server.add_insecure_port('[::]:8080')

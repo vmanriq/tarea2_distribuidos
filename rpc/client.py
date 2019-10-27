@@ -66,6 +66,11 @@ class Client():
         for i in m.msn:
             print(f'-> {i.contenido}')
 
+    def ListaDeUsuarios(self):
+        m = self.stub.ListaDeUsuarios(Chat_pb2.Id(id = self.id))
+        for i in m.user:
+            print(f'-> Nombre Cliente {i.nombre}, Id cliente {i.id}')
+
 
 
 
@@ -81,7 +86,7 @@ while True:
     inp  = input()
     ln = inp.split(':')
     if((ln[0] == '!listado') and (len(ln)==1)):
-        print('listado')
+        client.ListaDeUsuarios()
     elif((ln[0] == '!mensajes') and (len(ln)==1)):
         client.Messages()
     elif((ln[0] == '!msn') and (len(ln)==3)):

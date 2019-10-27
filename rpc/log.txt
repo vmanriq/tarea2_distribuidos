@@ -1,3 +1,4 @@
-Sender@[ada#1]@Receiver@[abc#0]@Message@[1;Hola;Sun Oct 27 03:08:00 2019]
-Sender@[ada#1]@Receiver@[abc#0]@Message@[2;test;Sun Oct 27 03:09:08 2019]
-Sender@[ada#1]@Receiver@[abc#0]@Message@[1;test2;Sun Oct 27 03:10:43 2019]
+Sender@[ada#1]@Receiver@[abc#0]@Message@[1;Hola;Sun Oct 27 03:34:45 2019]
+Sender@[abc#0]@Receiver@[ada#1]@Message@[2;bruh;Sun Oct 27 03:35:10 2019]
+Sender@[ada#1]@Receiver@[abc#0]@Message@[3;#RENUNCIAPIÑERA;Sun Oct 27 03:35:36 2019]
+Sender@[ada#1]@Receiver@[abc#0]@Message@[4;Big F;Sun Oct 27 03:35:51 2019]

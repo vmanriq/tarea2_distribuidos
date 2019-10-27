@@ -12,13 +12,13 @@ class Server(Chat_pb2_grpc.ChatServicer):
         self.message_id = 0
         self.enviados = {}
         self.recibidos = {}
-        self.nombre = []
+        self.nombre = {}
 
     def Connection(self,request,context):
         print(f'Responde el thread{threading.get_ident()}')
 
-        self.nombre.append(request.nombre) # se obtiene el nombre de la persona que hizo la request, supongo que despue slo ssamos ?
         new_id = self.user_id
+        self.nombre[new_id] = request.nombre # se obtiene el nombre de la persona que hizo la request, supongo que despue slo ssamos ?
         self.enviados[new_id] = [] # se crea llave = id , valor = lista de mensajes enviados
         self.recibidos[new_id] = [] #se crea lista para mensaje recibidos
 
@@ -33,7 +33,7 @@ class Server(Chat_pb2_grpc.ChatServicer):
             estado = flag ,
             detalle = f'El mensaje a {message.receptor} no pudo se entregado'
         )
-        if message.receptor.id > self.user_id and message.receptor.nombre not in self.nombre: #el usuario que iba a ser el enviado el mensaje no existe
+        if message.receptor.id > self.user_id and message.receptor.nombre not in self.nombre.values(): #el usuario que iba a ser el enviado el mensaje no existe
             return respuesta
 
 
@@ -55,6 +55,7 @@ class Server(Chat_pb2_grpc.ChatServicer):
 
     def Ping(self,pong,context):
         respuesta = pong.ping
+        # No se como cambia esto, ahora q puse un diccionario en vez de lista???????
         print(f'El cliente {respuesta} tiene estos nombres: {self.nombre}')
         return Chat_pb2.Pong(
             ping = 'Ni un Poco '
@@ -79,6 +80,13 @@ class Server(Chat_pb2_grpc.ChatServicer):
                                 timestamp = men[2]
                 ))
         return r
+
+    def ListaDeUsuarios(self,id,context):
+        r = Chat_pb2.UserList()
+        for i in self.nombre:
+            r.user.append(Chat_pb2.User(id = i, nombre = self.nombre[i]))
+        return r
+
 
 if __name__ == "__main__":
     #Se corre server con n threads

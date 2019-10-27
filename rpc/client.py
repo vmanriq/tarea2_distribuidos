@@ -15,9 +15,8 @@ class Client():
         self.channel = grpc.insecure_channel(f'{SERVER}:{PORT}')
         self.stub = Chat_pb2_grpc.ChatStub(self.channel)
         self.id = self.stub.Connection(Chat_pb2.Nombre(nombre = nombre)).id # se le pide al server que nos de un id
-        # DEBUGG
-        print(self.id)
-        print(self.nombre)
+        print(f'Id cliente: {self.id}, Nombre Cliente: {self.nombre}')
+        print('==================================BEGIN=======================================')
         self.my_user = Chat_pb2.User(
             id = self.id,
             nombre = self.nombre
@@ -48,7 +47,6 @@ class Client():
                 # Esto debería tener lock????
                 id = self.stub.New_message(Chat_pb2.Id(id = self.id)).id
             ))
-            print(f'La respuesta fue: {response}')
         except grpc.RpcError as err:
             print(err)
 
@@ -57,22 +55,33 @@ class Client():
         try:
             for mensaje in self.stub.ReciveMessage(Chat_pb2.Id(id = self.id)):
                 emisor = mensaje.emisor
-                print('\n=================================')
+                print('\n========================= NUEVO MENSAJE RECIBIDO ===============================')
                 print(f'[{emisor.nombre}#{emisor.id}-{mensaje.timestamp}]{mensaje.contenido}')
-                print('=================================')
+                print('>> Ingrese acción: ',end = '')
         except grpc.RpcError as err:
             print(err)
 
 
 
 ################ Loop Principal #########################
-print('Ingrese su nombre de usuario: ',end = '')
+print('>> Ingrese su nombre de usuario: ',end = '')
 nombre = input()
-
 client = Client(nombre)
 while True:
-    print('Ingrese destinatario: ',end = '') # de la forma nombre#id
-    destinatario  = input()
-    print('Ingrese mensaje a enviar: ',end = '')
-    mensaje = input()
-    client.SendMessage(mensaje,destinatario)
+    print('Formato mensaje : !msn:{detinatario}#{id}:{mensaje}')
+    print('Formato comando listado : !listado')
+    print('formato comando mensajes enviados : !mensajes')
+    print('>> Ingrese acción: ',end = '')
+    inp  = input()
+    ln = inp.split(':')
+    if((ln[0] == '!listado') and (len(ln)==1)):
+        print('listado')
+    elif((ln[0] == '!mensajes') and (len(ln)==1)):
+        print('lasdasdasd')
+    elif((ln[0] == '!msn') and (len(ln)==3)):
+        destinatario = ln[1]
+        mensaje = ln[2]
+        print(destinatario,mensaje)
+        client.SendMessage(mensaje,destinatario)
+    else:
+        print('>> formato incorrecto, intente de nuevo')

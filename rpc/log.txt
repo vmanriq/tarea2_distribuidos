@@ -1,3 +1,4 @@
-Sender [ada#1] Receiver [abc#0] Message [1:hola:Sun Oct 27 00:03:45 2019]
-Sender [ada#1] Receiver [abc#0] Message [2:ejo ejo:Sun Oct 27 00:03:55 2019]
-Sender [abc#0] Receiver [ada#1] Message [3:wena wena:Sun Oct 27 00:04:05 2019]
+Sender [ada#1] Receiver [abc#0] Message [1:wena wena:Sun Oct 27 01:16:34 2019]
+Sender [ada#1] Receiver [abc#0] Message [2:#RENUNCIAPIÑERA:Sun Oct 27 01:17:44 2019]
+Sender [abc#0] Receiver [ada#1] Message [3:owo:Sun Oct 27 01:18:00 2019]
+Sender [abc#0] Receiver [ada#1] Message [4:owo:Sun Oct 27 01:18:13 2019]

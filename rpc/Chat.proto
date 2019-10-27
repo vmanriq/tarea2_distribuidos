@@ -16,15 +16,19 @@ message User{
 message UserList{
     repeated User user = 1;
 }
-//Mensaje 
+//Mensaje
 message Message{
-    User emisor = 1; //quien envia el mensaje 
-
+    User emisor = 1; //quien envia el mensaje
     string contenido  = 2;
-    string  timestamp = 3; //tambien ver esto, quien pone la estampilla ? 
-    //int32 id = 4; // el id solo tiene sentido para el server (?)
-    User receptor = 5; //quien recibe el mensaje 
+    string  timestamp = 3;
+    int32 id = 4;
+    User receptor = 5; //quien recibe el mensaje
 }
+
+message NewMessageID{
+    int32 id = 1;
+}
+
 message Pong{
     string ping = 1;
 }
@@ -40,4 +44,5 @@ service Chat{
     rpc ReciveMessage(Id) returns (stream Message);
     rpc Ping (Pong) returns (Pong);
     rpc Connection(Nombre) returns (Id);
+    rpc New_message(Id) returns (NewMessageID);
 }

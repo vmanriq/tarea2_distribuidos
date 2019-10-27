@@ -1,4 +1,3 @@
-Sender [ada#1] Receiver [abc#0] Message [1:wena wena:Sun Oct 27 01:16:34 2019]
-Sender [ada#1] Receiver [abc#0] Message [2:#RENUNCIAPIÑERA:Sun Oct 27 01:17:44 2019]
-Sender [abc#0] Receiver [ada#1] Message [3:owo:Sun Oct 27 01:18:00 2019]
-Sender [abc#0] Receiver [ada#1] Message [4:owo:Sun Oct 27 01:18:13 2019]
+Sender@[ada#1]@Receiver@[abc#0]@Message@[1;Hola;Sun Oct 27 03:08:00 2019]
+Sender@[ada#1]@Receiver@[abc#0]@Message@[2;test;Sun Oct 27 03:09:08 2019]
+Sender@[ada#1]@Receiver@[abc#0]@Message@[1;test2;Sun Oct 27 03:10:43 2019]

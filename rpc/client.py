@@ -57,9 +57,15 @@ class Client():
                 emisor = mensaje.emisor
                 print('\n========================= NUEVO MENSAJE RECIBIDO ===============================')
                 print(f'[{emisor.nombre}#{emisor.id}-{mensaje.timestamp}]{mensaje.contenido}')
-                print('>> Ingrese acción: ',end = '')
+                print('>> Ingrese acción:')
         except grpc.RpcError as err:
             print(err)
+
+    def Messages(self):
+        m = self.stub.Messages(Chat_pb2.Id(id = self.id))
+        for i in m.msn:
+            print(f'-> {i.contenido}')
+
 
 
 
@@ -77,7 +83,7 @@ while True:
     if((ln[0] == '!listado') and (len(ln)==1)):
         print('listado')
     elif((ln[0] == '!mensajes') and (len(ln)==1)):
-        print('lasdasdasd')
+        client.Messages()
     elif((ln[0] == '!msn') and (len(ln)==3)):
         destinatario = ln[1]
         mensaje = ln[2]

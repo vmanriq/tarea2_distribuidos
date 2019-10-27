@@ -92,7 +92,7 @@ while True:
     elif((ln[0] == '!msn') and (len(ln)==3)):
         destinatario = ln[1]
         mensaje = ln[2]
-        print(destinatario,mensaje)
+       # print(destinatario,mensaje)
         client.SendMessage(mensaje,destinatario)
     else:
         print('>> formato incorrecto, intente de nuevo')

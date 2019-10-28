@@ -57,7 +57,7 @@ class Client():
                 emisor = mensaje.emisor
                 print('\n========================= NUEVO MENSAJE RECIBIDO ===============================')
                 print(f'[{emisor.nombre}#{emisor.id}-{mensaje.timestamp}]{mensaje.contenido}')
-                print('>> Ingrese acción:')
+                print('>> Ingrese accion:')
         except grpc.RpcError as err:
             print(err)
 
@@ -82,7 +82,7 @@ while True:
     print('Formato mensaje : !msn:{detinatario}#{id}:{mensaje}')
     print('Formato comando listado : !listado')
     print('formato comando mensajes enviados : !mensajes')
-    print('>> Ingrese acción: ',end = '')
+    print('>> Ingrese accion: ',end = '')
     inp  = input()
     ln = inp.split(':')
     if((ln[0] == '!listado') and (len(ln)==1)):

@@ -5,7 +5,7 @@ import time
 
 
 
-SERVER = 'localhost'
+SERVER = 'server'
 PORT = '8080'
 
 class Client():

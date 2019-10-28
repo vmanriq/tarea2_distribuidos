@@ -5,24 +5,23 @@ version: "3"
 services:
 
   server:
+
+    container_name: server 
     #define donde se encuentra el dockerfile der servicio
     build:
       context: .
       dockerfile: DockerServer
 
 
-    # we broadcast the server).
-    #permite conectarse a un puerto fuera del container la sintaxis es [peurto que queremos en nuestra maquina]:[puerto en el container ]
-
-    #coando que se ejecuta una vez la imagen es creada
     command:
-      python3 -u server/server.py
+      #tail -F /dev/null 
+      python3 -u server.py
 
-   # ports:
-    #  - 5000:5000
-    volumes:
-      - ./respuestas/head:/archivos
+ 
+   
   client:
+
+    container_name: client1
 
     build:
       context: .
@@ -37,6 +36,23 @@ services:
 
     #network_mode: host
     #dependencia , el cliente tiene que esperar hasta que el servicio del servidor este listo
+    
+
+    depends_on:
+      - server
+
+  client2:
+    container_name: client2
+
+    build:
+      context: .
+      dockerfile: DockerClient
+
+
+    command:
+      #bash -c "python3 -u client/client.py " #corre el cliente automaticamente
+      tail -F /dev/null #deja al cliente corriendo por dentras docker exec -i -t "nombre_del_container" bash  para entrar a este
+ 
     
 
     depends_on:

@@ -6,7 +6,7 @@ services:
 
   server:
 
-    container_name: server 
+    container_name: server
     #define donde se encuentra el dockerfile der servicio
     build:
       context: .
@@ -14,11 +14,14 @@ services:
 
 
     command:
-      #tail -F /dev/null 
+      #tail -F /dev/null
       python3 -u server.py
 
- 
-   
+    volumes:
+      - ./servidor:/server/log
+
+
+
   client:
 
     container_name: client1
@@ -36,7 +39,7 @@ services:
 
     #network_mode: host
     #dependencia , el cliente tiene que esperar hasta que el servicio del servidor este listo
-    
+
 
     depends_on:
       - server
@@ -52,8 +55,8 @@ services:
     command:
       #bash -c "python3 -u client/client.py " #corre el cliente automaticamente
       tail -F /dev/null #deja al cliente corriendo por dentras docker exec -i -t "nombre_del_container" bash  para entrar a este
- 
-    
+
+
 
     depends_on:
       - server

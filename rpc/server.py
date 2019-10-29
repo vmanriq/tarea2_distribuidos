@@ -40,7 +40,7 @@ class Server(Chat_pb2_grpc.ChatServicer):
         self.recibidos[message.receptor.id].append(message)
         self.enviados[message.emisor.id].append(message)
         # Se procede a escribir log .txt
-        f = open("log.txt","a")
+        f = open("log/log.txt","a")
         f.write(f'Sender@[{message.emisor.nombre}#{message.emisor.id}]@Receiver@[{message.receptor.nombre}#{message.receptor.id}]@Message@[{message.id};{message.contenido};{message.timestamp}]\n')
         f.close()
         print(f'El usuario {message.emisor.nombre} envia mensaje a {message.receptor.nombre}')
@@ -69,7 +69,7 @@ class Server(Chat_pb2_grpc.ChatServicer):
 
     def Messages(self,id,context):
         r = Chat_pb2.MessageList()
-        f = open("log.txt","r")
+        f = open("log/log.txt","r")
         for i in f:
             l = i.split("@")
             if( int(l[1][1:-1].split("#")[1]) == id.id ):
@@ -79,6 +79,7 @@ class Server(Chat_pb2_grpc.ChatServicer):
                                 contenido = men[1],
                                 timestamp = men[2]
                 ))
+        f.close()
         return r
 
     def ListaDeUsuarios(self,id,context):

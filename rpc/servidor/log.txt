@@ -1,0 +1,2 @@
+Sender@[ada#1]@Receiver@[abc#0]@Message@[1;Hola;Tue Oct 29 22:13:45 2019]
+Sender@[abc#0]@Receiver@[ada#1]@Message@[2;nice;Tue Oct 29 22:14:37 2019]

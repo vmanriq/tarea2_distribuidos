@@ -1,2 +1,5 @@
 Sender@[ada#1]@Receiver@[abc#0]@Message@[1;Hola;Tue Oct 29 22:13:45 2019]
 Sender@[abc#0]@Receiver@[ada#1]@Message@[2;nice;Tue Oct 29 22:14:37 2019]
+Sender@[test2#1]@Receiver@[manriq#0]@Message@[1;wena;Sat Nov 30 18:42:33 2019]
+Sender@[test2#2]@Receiver@[test0#0]@Message@[1; wenaa;Sat Nov 30 19:40:37 2019]
+Sender@[test2#1]@Receiver@[test#0]@Message@[2;noce;Sat Nov 30 20:03:49 2019]

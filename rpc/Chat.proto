@@ -18,6 +18,11 @@ message UserList{
     repeated User user = 1;
 }
 
+//flag
+message Flag{
+  bool flag = 1;
+}
+
 //Mensaje
 message Message{
     User emisor = 1; //quien envia el mensaje
@@ -47,7 +52,7 @@ message Estado{
 message Empty {}
 
 service Chat{
-    rpc SendMessage(Message) returns (Estado);
+    rpc SendMessage(Message) returns (Flag);
     rpc ReciveMessage(Id) returns (stream Message);
     rpc Ping (Pong) returns (Pong);
     rpc Connection(Nombre) returns (Id);

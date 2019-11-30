@@ -24,14 +24,6 @@ class Client():
         #se crea thread para que escuche los mensajes entrantes
         threading.Thread(target=self.ReciveMessage,daemon=True).start()
 
-#### Funcion de prueba
-    def Ping(self):
-        respuesta = self.stub.Ping(
-        Chat_pb2.Pong(
-            ping = self.nombre
-            )
-        )
-        print(respuesta)
 
 ## se envia mensaje
     def SendMessage(self,contenido,destino):
@@ -47,6 +39,8 @@ class Client():
                 # Esto debería tener lock????
                 id = self.stub.New_message(Chat_pb2.Id(id = self.id)).id
             ))
+            if not response.flag:
+                print("NO existe el usuario a quien se le quiere enviar el mensaje ")
         except grpc.RpcError as err:
             print(err)
 
@@ -65,6 +59,8 @@ class Client():
         m = self.stub.Messages(Chat_pb2.Id(id = self.id))
         for i in m.msn:
             print(f'-> {i.contenido}')
+        if len(m.msn) == 0:
+            print('-> NO  mensajes enviados')
 
     def ListaDeUsuarios(self):
         m = self.stub.ListaDeUsuarios(Chat_pb2.Id(id = self.id))

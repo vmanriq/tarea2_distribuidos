@@ -34,7 +34,7 @@ class Server(Chat_pb2_grpc.ChatServicer):
             detalle = f'El mensaje a {message.receptor} no pudo se entregado'
         )
         if message.receptor.id > self.user_id and message.receptor.nombre not in self.nombre.values(): #el usuario que iba a ser el enviado el mensaje no existe
-            return respuesta
+            return Chat_pb2.Flag(flag=False)
 
 
         self.recibidos[message.receptor.id].append(message)
@@ -44,7 +44,7 @@ class Server(Chat_pb2_grpc.ChatServicer):
         f.write(f'Sender@[{message.emisor.nombre}#{message.emisor.id}]@Receiver@[{message.receptor.nombre}#{message.receptor.id}]@Message@[{message.id};{message.contenido};{message.timestamp}]\n')
         f.close()
         print(f'El usuario {message.emisor.nombre} envia mensaje a {message.receptor.nombre}')
-        return Chat_pb2.Empty()
+        return Chat_pb2.Flag(flag=True)
 
     def New_message(self,n,context):
         self.message_id+=1

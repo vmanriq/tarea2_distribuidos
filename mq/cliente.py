@@ -5,9 +5,9 @@ RABBIT = 'localhost'
 
 class Cliente:
     """docstring for Cliente."""
-    def __init__(self, nombre):
+    def __init__(self, nombre, id):
         self.nombre = nombre
-        self.id = '1'
+        self.id = id
         #self.id = get_id()
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         self.channel = connection.channel()
@@ -25,15 +25,18 @@ class Cliente:
                                     body=message)
 
     def recive_message(self):
-        self.channel.basic_consume(queue=f'recive#{self.id}', on_message_callback=self.callback, auto_ack=False)
+        connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
+        channel = connection.channel()
+        channel.basic_consume(queue=f'recive#{self.id}', on_message_callback=self.callback, auto_ack=True)
         #print("WENA CARBOS ESTE EL THREAD \n \n \n")
-        self.channel.start_consuming()
+        channel.start_consuming()
 
 
 
 if __name__ == "__main__":
     nombre = input("Ingrese su nombre: ")
-    cliente = Cliente(nombre)
+    id = input("INgrese id: ")
+    cliente = Cliente(nombre, id )
     while True:
         print("Ingrese mensaje a enviar: ")
         mensaje = input()

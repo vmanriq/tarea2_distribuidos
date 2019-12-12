@@ -1,7 +1,7 @@
 import pika
 import threading
 import socket
-
+import json 
 
 RABBIT = 'localhost'
 HOST = '0.0.0.0'
@@ -32,9 +32,34 @@ class Cliente:
     def callback(self, ch, method, properties, body):
         print(" [x] %r" % body)
 
-    def send_message(self, receptor, message):
+    def send_message(self, receptor, message,comando ): #comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2==list_user
         # Darle formato JSON/Diccionario
-        msn = receptor+"#"+mensaje
+        nombre,id = receptor.split("#")
+        mensaje = {}
+        if comando == 0:
+            mensaje = {
+                    'tipo' : 0,
+                    'body' : message,
+                    'id_receptor' : id,
+                    'nombre_receptor' : nombre,
+                    'id_emisor' : self.id,
+                    'nombre emisor' : self.nombre
+            }
+
+        elif comando == 1:
+            mensaje = {
+                    'tipo' : 1,
+                    'comando' : 'historial'
+            }
+
+        elif comando == 2:
+            mensaje = {
+                    'tipo' : 2,
+                    'comando' : 'list_user'
+            }
+
+        msn = json.dumps(mensaje)
+        print(f'Este es el mensaje {msn}')
         self.s.sendall(msn.encode())
         #self.channel.basic_publish(exchange='', routing_key=f'send#{receptor}',body=message)
 
@@ -50,8 +75,20 @@ if __name__ == "__main__":
     nombre = input("Ingrese su nombre: ")
     cliente = Cliente(nombre)
     while True:
-        print("Ingrese mensaje a enviar: ")
-        mensaje = input()
-        print("ingrese receptor: ")
-        receptor = input()
-        cliente.send_message(receptor, mensaje)
+        print('Formato mensaje : !msn:{detinatario}#{id}:{mensaje}')
+        print('Formato comando listado : !listado')
+        print('formato comando mensajes enviados : !mensajes')
+        print('>> Ingrese accion: ',end = '')
+        inp  = input()
+        ln = inp.split(':')
+        if((ln[0] == '!listado') and (len(ln)==1)):
+            client.ListaDeUsuarios()
+        elif((ln[0] == '!mensajes') and (len(ln)==1)):
+            client.Messages()
+        elif((ln[0] == '!msn') and (len(ln)==3)):
+            destinatario = ln[1]
+            mensaje = ln[2]
+           # print(destinatario,mensaje)
+            cliente.send_message(destinatario, mensaje,0 )
+        else:
+            print('>> formato incorrecto, intente de nuevo')

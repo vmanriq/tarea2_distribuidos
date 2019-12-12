@@ -1,11 +1,11 @@
 import pika
 import threading
 import socket
-import json 
+import json
 
 RABBIT = 'localhost'
 HOST = '0.0.0.0'
-PORT = 5050
+PORT = 5060
 
 
 class Cliente:
@@ -43,7 +43,7 @@ class Cliente:
                     'id_receptor' : id,
                     'nombre_receptor' : nombre,
                     'id_emisor' : self.id,
-                    'nombre emisor' : self.nombre
+                    'nombre_emisor' : self.nombre
             }
 
         elif comando == 1:

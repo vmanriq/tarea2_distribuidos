@@ -4,7 +4,9 @@ import threading
 import json
 from concurrent import futures
 
-PORT = 5050
+global IDS
+
+PORT = 5060
 HOST = "0.0.0.0"
 RABBIT = 'localhost'
 
@@ -14,7 +16,6 @@ class ClientHanlder():
         self.id = id
         self.conn = conn
         data = self.conn.recv(1024)
-
         # ENVIA EL ID ?¡
         self.conn.sendall(str(id).encode())
 
@@ -22,8 +23,8 @@ class ClientHanlder():
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         self.channel = connection.channel()
         self.channel.queue_declare(queue= f'recive#{self.id}')
-        #threading.Thread(target=self.recive_message, daemon=True).start()
-        self.recive_message()
+        threading.Thread(target=self.recive_message, daemon=True).start()
+        #self.recive_message()
 
     def recive_message(self):
         while True:
@@ -33,7 +34,7 @@ class ClientHanlder():
             tipo = message['tipo']
             if tipo == 0:
                 a = open("log.txt","a")
-                a.write(message)
+                a.write(str(message))
                 a.close()
                 self.send_message(message)
 
@@ -44,10 +45,11 @@ class ClientHanlder():
         # Esta weaita sería el decode del JSON/Diccionario
 
         try:
-            self.channel.basic_publish(exchange='', routing_key=f'recive#{message.id_receptor}',
-                                    body=message.body)
+            print(IDS)
+            self.channel.basic_publish(exchange='', routing_key=f"recive#{message['id_receptor']}",
+                                    body=message['body'])
         except:
-            print(f'El usuario {message.nombre_emisor} no existe')
+            print(f"El usuario {message['nombre_emisor']} no existe")
         return
 
 
@@ -56,8 +58,12 @@ if __name__ == "__main__":
     s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.bind((HOST,PORT))
     s.listen()
-    server  = futures.ThreadPoolExecutor(max_workers=10)
+    #server  = futures.ThreadPoolExecutor(max_workers=10)
     while True:
+        server  = futures.ThreadPoolExecutor(max_workers=10)
+        print('jhjhzxjh<z1')
         conn, addr = s.accept()
-        f = server.submit(ClientHanlder(conn,addr,IDS))
+        print('jhjhzxjh<z2')
+        server.submit(ClientHanlder(conn,addr,IDS))
+        print('jhjhzxjh<z3')
         IDS+=1

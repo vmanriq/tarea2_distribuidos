@@ -3,21 +3,40 @@ import socket
 import threading
 import json
 from concurrent import futures
+class Id:
+    def __init__(self):
+        self.id = 0
+    def update(self):
+        self.id+=1
+    def get(self):
+        return self.id 
+class Users:
+    def __init__(self):
+        self.usuarios = []
+    def add(self, usuario):
+        self.usuarios.append(usuario)
+    def get(self):
+        return self.usuarios
 
-global IDS
-
-PORT = 5060
+PORT = 5062
 HOST = "0.0.0.0"
 RABBIT = 'localhost'
+IDS = Id()
+USERS = Users()
 
 class ClientHanlder():
-    def __init__(self,conn,addr,id):
+    def __init__(self, conn, addr, ID, USERS):
         # INIT
-        self.id = id
+        self.id = ID.get()
+        print(f"Este es mi id{self.id}")
         self.conn = conn
         data = self.conn.recv(1024)
+        self.nombre = data.decode('utf-8')
+        print(f'Este es minombre {self.nombre}')
+        USERS.add(f'{self.nombre}#{str(self.id)}')
+        self.USERS = USERS
         # ENVIA EL ID ?¡
-        self.conn.sendall(str(id).encode())
+        self.conn.sendall(str(self.id).encode())
 
         # CREA LAS COLAS
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
@@ -37,6 +56,16 @@ class ClientHanlder():
                 a.write(str(message))
                 a.close()
                 self.send_message(message)
+            elif tipo == 2:
+                message = {
+                    'tipo' : 2,
+                    'body' : str(self.USERS.get()),
+                    'id_receptor' : self.id,
+                    'nombre_receptor' : self.nombre,
+                    'id_emisor' : self.id,
+                    'nombre_emisor' : self.nombre
+            }    
+                self.send_message(message)
 
 
 
@@ -45,7 +74,6 @@ class ClientHanlder():
         # Esta weaita sería el decode del JSON/Diccionario
 
         try:
-            print(IDS)
             self.channel.basic_publish(exchange='', routing_key=f"recive#{message['id_receptor']}",
                                     body=message['body'])
         except:
@@ -54,16 +82,13 @@ class ClientHanlder():
 
 
 if __name__ == "__main__":
-    IDS = 1
     s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.bind((HOST,PORT))
     s.listen()
     #server  = futures.ThreadPoolExecutor(max_workers=10)
     while True:
+        print(IDS.get())
         server  = futures.ThreadPoolExecutor(max_workers=10)
-        print('jhjhzxjh<z1')
         conn, addr = s.accept()
-        print('jhjhzxjh<z2')
-        server.submit(ClientHanlder(conn,addr,IDS))
-        print('jhjhzxjh<z3')
-        IDS+=1
+        server.submit(ClientHanlder(conn, addr, IDS, USERS))
+        IDS.update()

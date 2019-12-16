@@ -5,7 +5,7 @@ import json
 
 RABBIT = 'localhost'
 HOST = '0.0.0.0'
-PORT = 5060
+PORT = 5062
 
 
 class Cliente:
@@ -15,7 +15,7 @@ class Cliente:
         self.nombre = nombre
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.connect((HOST, PORT))
-        self.s.sendall(b'Iniciando Conexion')
+        self.s.sendall(bytes(self.nombre, 'utf-8'))
 
         # RECIBE EL ID
         data = self.s.recv(1024)
@@ -82,7 +82,7 @@ if __name__ == "__main__":
         inp  = input()
         ln = inp.split(':')
         if((ln[0] == '!listado') and (len(ln)==1)):
-            client.ListaDeUsuarios()
+            cliente.send_message(f'{cliente.nombre}#{str(cliente.id)}', '!listado', 2)
         elif((ln[0] == '!mensajes') and (len(ln)==1)):
             client.Messages()
         elif((ln[0] == '!msn') and (len(ln)==3)):

@@ -32,7 +32,8 @@ class Cliente:
     def callback(self, ch, method, properties, body):
         print(" [x] %r" % body)
 
-    def send_message(self, receptor, message,comando ): #comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2==list_user
+    # comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2==list_user
+    def send_message(self, receptor, message,comando ): 
         # Darle formato JSON/Diccionario
         nombre,id = receptor.split("#")
         mensaje = {}
@@ -84,11 +85,10 @@ if __name__ == "__main__":
         if((ln[0] == '!listado') and (len(ln)==1)):
             cliente.send_message(f'{cliente.nombre}#{str(cliente.id)}', '!listado', 2)
         elif((ln[0] == '!mensajes') and (len(ln)==1)):
-            client.Messages()
+            cliente.send_message('#','',1)
         elif((ln[0] == '!msn') and (len(ln)==3)):
             destinatario = ln[1]
             mensaje = ln[2]
-           # print(destinatario,mensaje)
             cliente.send_message(destinatario, mensaje,0 )
         else:
             print('>> formato incorrecto, intente de nuevo')

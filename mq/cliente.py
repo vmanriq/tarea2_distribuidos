@@ -30,7 +30,12 @@ class Cliente:
         print(f'mi id es {self.id}')
 
     def callback(self, ch, method, properties, body):
-        print(" [x] %r" % body)
+        message = json.loads(body.decode('utf-8'))
+        if(message['tipo']==0):
+            print(f"{message['nombre_emisor']}#{message['id_emisor']} : {message['body']}")
+        else:
+            for i in message['body']:
+                print(f'->{i}')
 
     # comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2==list_user
     def send_message(self, receptor, message,comando ): 
@@ -46,13 +51,11 @@ class Cliente:
                     'id_emisor' : self.id,
                     'nombre_emisor' : self.nombre
             }
-
         elif comando == 1:
             mensaje = {
                     'tipo' : 1,
                     'comando' : 'historial'
             }
-
         elif comando == 2:
             mensaje = {
                     'tipo' : 2,
@@ -60,9 +63,7 @@ class Cliente:
             }
 
         msn = json.dumps(mensaje)
-        print(f'Este es el mensaje {msn}')
         self.s.sendall(msn.encode())
-        #self.channel.basic_publish(exchange='', routing_key=f'send#{receptor}',body=message)
 
     def recive_message(self):
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))

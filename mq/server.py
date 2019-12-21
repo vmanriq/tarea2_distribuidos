@@ -10,7 +10,7 @@ class id_message:
     def getIdMessage(self):
         self.id += 1
         return self.id
-        
+
 class Id:
     def __init__(self):
         self.id = 0
@@ -77,7 +77,7 @@ class ClientHanlder():
                 for i in a:
                     m = json.loads(i.replace("\'","\"").strip())
                     if m['nombre_emisor'] == self.nombre :
-                        message_list.append(m['body'])
+                        message_list.append(m)
                 a.close()
                 message = {
                     'tipo' : 1,
@@ -89,7 +89,6 @@ class ClientHanlder():
                     'body' : self.USERS.getUsers(),
                 }    
             self.send_message(message)
-
 
     def send_message(self, message):
         msn = json.dumps(message).encode()

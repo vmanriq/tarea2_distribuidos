@@ -2,6 +2,7 @@ import pika
 import threading
 import socket
 import json
+from datetime import datetime
 
 RABBIT = 'localhost'
 HOST = '0.0.0.0'
@@ -32,7 +33,10 @@ class Cliente:
     def callback(self, ch, method, properties, body):
         message = json.loads(body.decode('utf-8'))
         if(message['tipo']==0):
-            print(f"{message['nombre_emisor']}#{message['id_emisor']} : {message['body']}")
+            print(f"[{message['time']}] {message['nombre_emisor']}#{message['id_emisor']} : {message['body']}")
+        elif(message['tipo']==1):
+            for i in message['body']:
+                print(f"[{i['time']}] {i['nombre_emisor']}#{i['id_emisor']} : {i['body']}")
         else:
             for i in message['body']:
                 print(f'->{i}')
@@ -42,6 +46,7 @@ class Cliente:
         # Darle formato JSON/Diccionario
         nombre,id = receptor.split("#")
         mensaje = {}
+        now = datetime.now()
         if comando == 0:
             mensaje = {
                     'tipo' : 0,
@@ -49,7 +54,8 @@ class Cliente:
                     'id_receptor' : id,
                     'nombre_receptor' : nombre,
                     'id_emisor' : self.id,
-                    'nombre_emisor' : self.nombre
+                    'nombre_emisor' : self.nombre,
+                    'time' : str(now.strftime("%d/%m/%Y %H:%M:%S"))
             }
         elif comando == 1:
             mensaje = {

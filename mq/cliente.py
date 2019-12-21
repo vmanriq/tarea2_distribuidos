@@ -3,6 +3,7 @@ import threading
 import socket
 import json
 from datetime import datetime
+import sys
 
 RABBIT = 'localhost'
 HOST = '0.0.0.0'
@@ -37,14 +38,19 @@ class Cliente:
         elif(message['tipo']==1):
             if(len(message['body'])==0):
                 print(f'No existen mensajes enviados')
-                return
-            for i in message['body']:
-                print(f"[{i['time']}] {i['nombre_emisor']}#{i['id_emisor']} to {i['nombre_receptor']}#{i['id_receptor']} : {i['body']}")
+            else:
+                for i in message['body']:
+                    print(f"[{i['time']}] {i['nombre_emisor']}#{i['id_emisor']} to {i['nombre_receptor']}#{i['id_receptor']} : {i['body']}")
         elif(message['tipo']==2):
             for i in message['body']:
                 print(f'->{i}')
         else:
             print(f"{message['body']}")
+        print('Formato mensaje : !msn:{detinatario}#{id}:{mensaje}')
+        print('Formato comando listado : !listado')
+        print('formato comando mensajes enviados : !mensajes')
+        print('>> Ingrese accion: '),
+        
 
     # comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2==list_user
     def send_message(self, receptor, message,comando ): 
@@ -81,23 +87,27 @@ class Cliente:
         channel = connection.channel()
         channel.basic_consume(queue=f'recive#{self.id}', on_message_callback=self.callback, auto_ack=True)
         channel.start_consuming()
+    
+
 
 
 
 if __name__ == "__main__":
     nombre = input("Ingrese su nombre: ")
     cliente = Cliente(nombre)
+    print('Formato mensaje : !msn:{detinatario}#{id}:{mensaje}')
+    print('Formato comando listado : !listado')
+    print('formato comando mensajes enviados : !mensajes')
+    print('>> Ingrese accion: ')
     while True:
-        print('Formato mensaje : !msn:{detinatario}#{id}:{mensaje}')
-        print('Formato comando listado : !listado')
-        print('formato comando mensajes enviados : !mensajes')
-        print('>> Ingrese accion: ',end = '')
         inp  = input()
         ln = inp.split(':')
         if((ln[0] == '!listado') and (len(ln)==1)):
             cliente.send_message(f'{cliente.nombre}#{str(cliente.id)}', '!listado', 2)
         elif((ln[0] == '!mensajes') and (len(ln)==1)):
-            cliente.send_message('#','',1)
+            cliente.send_message('#','!mensajes',1)
+        elif((ln[0] == '!salir') and (len(ln)==1)):
+            sys.exit()
         elif((ln[0] == '!msn') and (len(ln)==3)):
             destinatario = ln[1]
             mensaje = ln[2]

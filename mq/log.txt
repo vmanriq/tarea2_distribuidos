@@ -4,3 +4,5 @@
 {'tipo': 0, 'body': 'HAAAAAAAAAaaa', 'id_receptor': '0', 'nombre_receptor': 'asdasd', 'id_emisor': 0, 'nombre_emisor': 'Manuel', 'time': '21/12/2019 03:28:06', 'id_message': 1}
 {'tipo': 0, 'body': 'asdasd', 'id_receptor': '0', 'nombre_receptor': 'Manuel', 'id_emisor': 0, 'nombre_emisor': 'Manuel', 'time': '21/12/2019 03:41:42', 'id_message': 1}
 {'tipo': 0, 'body': 'asdasdasd', 'id_receptor': '0', 'nombre_receptor': 'DODO', 'id_emisor': 1, 'nombre_emisor': 'FLAN', 'time': '21/12/2019 03:46:29', 'id_message': 1}
+{'tipo': 0, 'body': 'aSDASDASd', 'id_receptor': '0', 'nombre_receptor': 'Manuel', 'id_emisor': 0, 'nombre_emisor': 'Manuel', 'time': '21/12/2019 04:07:08', 'id_message': 1}
+{'tipo': 0, 'body': 'ASJDKAKSDJLA', 'id_receptor': '0', 'nombre_receptor': 'Manuel', 'id_emisor': 1, 'nombre_emisor': 'FLAN', 'time': '21/12/2019 04:23:55', 'id_message': 1}

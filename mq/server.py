@@ -30,8 +30,8 @@ class Users:
         return self.usuarios
 
 PORT = 5062
-HOST = "0.0.0.0"
-RABBIT = 'localhost'
+HOST = 'rabbitmqserver'
+RABBIT = 'rabbitmq'
 IDS = Id()
 USERS = Users()
 IDM = id_message() 

@@ -5,8 +5,8 @@ import json
 from datetime import datetime
 import sys
 
-RABBIT = 'localhost'
-HOST = '0.0.0.0'
+HOST = 'rabbitmqserver'
+RABBIT = 'rabbitmq'
 PORT = 5062
 
 

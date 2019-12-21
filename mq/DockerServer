@@ -6,13 +6,13 @@ WORKDIR /server
 RUN apt-get update \
     && apt-get install -y python3-pip python3-dev \
     && cd /usr/local/bin \
-    && ln -s /usr/bin/python3 python \
+    && ln -s /usr/bin/python3 python3 \
     && pip3 install --upgrade pip
 
 # NANO
 RUN apt-get -y install nano
 
-RUN apt-get install python3-pika -y
+RUN apt-get install python3-pika -y --upgrade
 
 # copia el archiv cliente.py del host hacia una carpeta en el cointainer
 ADD server.py .

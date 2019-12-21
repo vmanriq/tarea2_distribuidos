@@ -35,11 +35,16 @@ class Cliente:
         if(message['tipo']==0):
             print(f"[{message['time']}] {message['nombre_emisor']}#{message['id_emisor']} : {message['body']}")
         elif(message['tipo']==1):
+            if(len(message['body'])==0):
+                print(f'No existen mensajes enviados')
+                return
             for i in message['body']:
-                print(f"[{i['time']}] {i['nombre_emisor']}#{i['id_emisor']} : {i['body']}")
-        else:
+                print(f"[{i['time']}] {i['nombre_emisor']}#{i['id_emisor']} to {i['nombre_receptor']}#{i['id_receptor']} : {i['body']}")
+        elif(message['tipo']==2):
             for i in message['body']:
                 print(f'->{i}')
+        else:
+            print(f"{message['body']}")
 
     # comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2==list_user
     def send_message(self, receptor, message,comando ): 

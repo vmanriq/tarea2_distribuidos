@@ -67,10 +67,16 @@ class ClientHanlder():
             message = json.loads(data.decode('utf-8'))
             tipo = message['tipo']
             if tipo == 0:
-                message['id_message'] = IDM.getIdMessage()
-                a = open("log.txt","a")
-                a.write(str(message)+"\n")
-                a.close()
+                if self.verificar(message) == True:
+                    message['id_message'] = IDM.getIdMessage()
+                    a = open("log.txt","a")
+                    a.write(str(message)+"\n")
+                    a.close()
+                else:
+                    message = {
+                        'tipo' : 4,
+                        'body' : 'Error, el usuario ingresado no existe'
+                    }
             elif tipo == 1:
                 message_list = []
                 a = open("log.txt","r")
@@ -102,6 +108,14 @@ class ClientHanlder():
         except:
             print(f"El usuario {message['nombre_emisor']} no existe")
         return
+    
+    def verificar(self, message):
+        user = f"{message['nombre_receptor']}#{message['id_receptor']}"
+        if user in USERS.getUsers():
+            return True
+        else:
+            return False
+
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ class Users:
     def getUsers(self):
         return self.usuarios
 
-PORT = 5062
+PORT = 5010
 HOST = 'localhost'
 RABBIT = 'localhost'
 IDS = Id()
@@ -42,12 +42,18 @@ class ClientHanlder():
         self.id = ID.get()
         self.IDM = IDM
         print(f"Este es mi id {self.id}")
+
+
         self.conn = conn
         data = self.conn.recv(1024)
+
         self.nombre = data.decode('utf-8')
+        
         print(f'Este es minombre {self.nombre}')
+        
         USERS.addUser(f'{self.nombre}#{str(self.id)}')
         self.USERS = USERS
+        
         # ENVIA EL ID ?¡
         self.conn.sendall(str(self.id).encode())
 
@@ -55,46 +61,58 @@ class ClientHanlder():
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         self.channel = connection.channel()
         self.channel.queue_declare(queue= f'recive#{self.id}')
+        
         threading.Thread(target=self.recive_message, daemon=True).start()
         #self.recive_message()
 
+    def verificar(self, message):
+        user = f"{message['nombre_receptor']}#{message['id_receptor']}"
+        if user in USERS.getUsers():
+            return True
+        else:
+            return False
+    
     # comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2 ==list_user
-    def recive_message(self):
-        while True:
-            # JSON CON EN BINARY STRING DESDE CLIENTE
-            data = self.conn.recv(1024)
-            # DESERIALIZE
-            message = json.loads(data.decode('utf-8'))
-            tipo = message['tipo']
-            if tipo == 0:
-                if self.verificar(message) == True:
-                    message['id_message'] = IDM.getIdMessage()
-                    a = open("log.txt","a")
-                    a.write(str(message)+"\n")
-                    a.close()
-                else:
-                    message = {
-                        'tipo' : 4,
-                        'body' : 'Error, el usuario ingresado no existe'
-                    }
-            elif tipo == 1:
-                message_list = []
-                a = open("log.txt","r")
-                for i in a:
-                    m = json.loads(i.replace("\'","\"").strip())
-                    if m['nombre_emisor'] == self.nombre :
-                        message_list.append(m)
+    def callback(self, ch, method, properties, body):
+        message = json.loads(body.decode('utf-8'))
+        tipo = message['tipo']
+        if tipo == 0:
+            if self.verificar(message) == True:
+                message['id_message'] = IDM.getIdMessage()
+                a = open("log.txt","a")
+                a.write(str(message)+"\n")
                 a.close()
+            else:
                 message = {
-                    'tipo' : 1,
-                    'body' : message_list
-                }                
-            elif tipo == 2:
-                message = {
-                    'tipo' : 2,
-                    'body' : self.USERS.getUsers(),
-                }    
-            self.send_message(message)
+                    'tipo' : 4,
+                    'body' : 'Error, el usuario ingresado no existe'
+                }
+        elif tipo == 1:
+            message_list = []
+            a = open("log.txt","r")
+            for i in a:
+                m = json.loads(i.replace("\'","\"").strip())
+                if m['nombre_emisor'] == self.nombre :
+                    message_list.append(m)
+            a.close()
+            message = {
+                'tipo' : 1,
+                'body' : message_list
+            }                
+        elif tipo == 2:
+            message = {
+                'tipo' : 2,
+                'body' : self.USERS.getUsers(),
+            }    
+        self.send_message(message)
+    
+    def recive_message(self):
+        connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
+        channel = connection.channel()
+        channel.basic_consume( queue="main" , on_message_callback=self.callback, auto_ack=True)
+        channel.start_consuming()
+
+
 
     def send_message(self, message):
         msn = json.dumps(message).encode()
@@ -108,13 +126,7 @@ class ClientHanlder():
         except:
             print(f"El usuario {message['nombre_emisor']} no existe")
         return
-    
-    def verificar(self, message):
-        user = f"{message['nombre_receptor']}#{message['id_receptor']}"
-        if user in USERS.getUsers():
-            return True
-        else:
-            return False
+
 
 
 

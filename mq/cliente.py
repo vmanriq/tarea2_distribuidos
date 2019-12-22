@@ -7,7 +7,7 @@ import sys
 
 HOST = 'localhost'
 RABBIT = 'localhost'
-PORT = 5062
+PORT = 5010
 
 
 class Cliente:
@@ -26,7 +26,7 @@ class Cliente:
         # Se declara la cola
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         self.channel = connection.channel()
-        self.channel.queue_declare(queue= f'recive#{self.id}')
+        self.channel.queue_declare(queue= f'main')
         threading.Thread(target=self.recive_message, daemon=True).start()
 
         print(f'mi id es {self.id}')
@@ -51,7 +51,6 @@ class Cliente:
         print('formato comando mensajes enviados : !mensajes')
         print('>> Ingrese accion: '),
         
-
     # comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2==list_user
     def send_message(self, receptor, message,comando ): 
         # Darle formato JSON/Diccionario
@@ -80,7 +79,7 @@ class Cliente:
             }
 
         msn = json.dumps(mensaje)
-        self.s.sendall(msn.encode())
+        self.channel.basic_publish(exchange='', routing_key="main",body=msn)
 
     def recive_message(self):
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))

@@ -29,7 +29,7 @@ class Users:
     def getUsers(self):
         return self.usuarios
 
-PORT = 5010
+PORT = 5020
 HOST = 'localhost'
 RABBIT = 'localhost'
 IDS = Id()
@@ -85,25 +85,35 @@ class ClientHanlder():
             else:
                 message = {
                     'tipo' : 4,
-                    'body' : 'Error, el usuario ingresado no existe'
+                    'body' : 'Error, el usuario ingresado no existe',
+                    'id_receptor' : message['id_emisor'],
+                    'nombre_receptor' : message['nombre_emisor']
                 }
         elif tipo == 1:
             message_list = []
-            a = open("log.txt","r")
-            for i in a:
-                m = json.loads(i.replace("\'","\"").strip())
-                if m['nombre_emisor'] == self.nombre :
-                    message_list.append(m)
-            a.close()
+            try:
+                a = open("log.txt","r")
+                for i in a:
+                    m = json.loads(i.replace("\'","\"").strip())
+                    if m['nombre_emisor'] == message['nombre_emisor'] :
+                        message_list.append(m)
+                a.close()
+            except:
+                print("Sin mensajes registrados")
             message = {
                 'tipo' : 1,
-                'body' : message_list
-            }                
+                'body' : message_list,
+                'id_receptor' : message['id_emisor'],
+                'nombre_receptor' : message['nombre_emisor']
+            }
+
         elif tipo == 2:
             message = {
                 'tipo' : 2,
                 'body' : self.USERS.getUsers(),
-            }    
+                'id_receptor' : message['id_emisor'],
+                'nombre_receptor' : message['nombre_emisor']
+            } 
         self.send_message(message)
     
     def recive_message(self):
@@ -117,11 +127,7 @@ class ClientHanlder():
     def send_message(self, message):
         msn = json.dumps(message).encode()
         try:
-            if(message['tipo']==0):
-                self.channel.basic_publish(exchange='', routing_key=f"recive#{message['id_receptor']}",
-                                    body=msn)
-            else:
-                self.channel.basic_publish(exchange='', routing_key=f"recive#{str(self.id)}",
+            self.channel.basic_publish(exchange='', routing_key=f"recive#{message['id_receptor']}",
                                     body=msn)
         except:
             print(f"El usuario {message['nombre_emisor']} no existe")

@@ -7,7 +7,7 @@ import sys
 
 HOST = 'localhost'
 RABBIT = 'localhost'
-PORT = 5010
+PORT = 5020
 
 
 class Cliente:
@@ -70,12 +70,16 @@ class Cliente:
         elif comando == 1:
             mensaje = {
                     'tipo' : 1,
-                    'comando' : 'historial'
+                    'comando' : 'historial',
+                    'id_emisor' : self.id,
+                    'nombre_emisor' : self.nombre
             }
         elif comando == 2:
             mensaje = {
                     'tipo' : 2,
-                    'comando' : 'list_user'
+                    'comando' : 'list_user',
+                    'id_emisor' : self.id,
+                    'nombre_emisor' : self.nombre
             }
 
         msn = json.dumps(mensaje)

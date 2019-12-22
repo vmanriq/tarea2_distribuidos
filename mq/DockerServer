@@ -12,7 +12,8 @@ RUN apt-get update \
 # NANO
 RUN apt-get -y install nano
 
-RUN apt-get install python3-pika -y --upgrade
+# PIKA
+RUN pip3 install -U pika
 
 # copia el archiv cliente.py del host hacia una carpeta en el cointainer
 ADD server.py .

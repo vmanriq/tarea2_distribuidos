@@ -69,7 +69,7 @@ class ClientHanlder():
             if tipo == 0:
                 if self.verificar(message) == True:
                     message['id_message'] = IDM.getIdMessage()
-                    a = open("log.txt","a")
+                    a = open("log/log.txt","a")
                     a.write(str(message)+"\n")
                     a.close()
                 else:
@@ -79,7 +79,7 @@ class ClientHanlder():
                     }
             elif tipo == 1:
                 message_list = []
-                a = open("log.txt","r")
+                a = open("log/log.txt","r")
                 for i in a:
                     m = json.loads(i.replace("\'","\"").strip())
                     if m['nombre_emisor'] == self.nombre :

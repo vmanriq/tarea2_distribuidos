@@ -1,8 +1,44 @@
-
 version: "3"
 
 #se definen los servicios
 services:
 
-  rabbitMQ:
-    conta
+  rabbitmq:
+    image: rabbitmq:3
+
+  rabbitmqserver:
+    container_name: rabbitmqserver
+    build:
+      context: .
+      dockerfile: DockerServer
+    command: 
+      python3 -u server.py
+    volumes:
+      - ./servidor:/server/log
+    depends_on: 
+      - rabbitmq
+  
+
+  client:
+    container_name: client1
+    build:
+      context: .
+      dockerfile: DockerClient
+    command:
+      tail -F /dev/null
+
+    depends_on:
+      - rabbitmq
+      - rabbitmqserver
+
+  client2:
+    container_name: client2
+    build:
+      context: .
+      dockerfile: DockerClient
+    command:
+      tail -F /dev/null
+
+    depends_on:
+      - rabbitmq
+      - rabbitmqserver

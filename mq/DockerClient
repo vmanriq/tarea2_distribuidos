@@ -1,0 +1,20 @@
+FROM ubuntu:latest
+RUN mkdir -p client 
+WORKDIR /client
+
+# PYTHON3 & PIP
+RUN apt-get update \
+    && apt-get install -y python3-pip python3-dev \
+    && cd /usr/local/bin \
+    && ln -s /usr/bin/python3 python3 \
+    && pip3 install --upgrade pip
+
+# NANO
+RUN apt-get -y install nano
+
+# PIKA
+RUN pip3 install -U pika
+
+
+# copia el archiv cliente.py del host hacia una carpeta en el cointainer
+ADD cliente.py .

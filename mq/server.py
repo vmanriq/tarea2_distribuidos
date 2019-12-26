@@ -30,8 +30,8 @@ class Users:
         return self.usuarios
 
 PORT = 5020
-HOST = 'localhost'
-RABBIT = 'localhost'
+HOST = 'rabbitmqserver'
+RABBIT = 'rabbitmq'
 IDS = Id()
 USERS = Users()
 IDM = id_message() 
@@ -79,7 +79,7 @@ class ClientHanlder():
         if tipo == 0:
             if self.verificar(message) == True:
                 message['id_message'] = IDM.getIdMessage()
-                a = open("log.txt","a")
+                a = open("log/log.txt","a")
                 a.write(str(message)+"\n")
                 a.close()
             else:
@@ -92,7 +92,7 @@ class ClientHanlder():
         elif tipo == 1:
             message_list = []
             try:
-                a = open("log.txt","r")
+                a = open("log/log.txt","r")
                 for i in a:
                     m = json.loads(i.replace("\'","\"").strip())
                     if m['nombre_emisor'] == message['nombre_emisor'] :
@@ -119,7 +119,8 @@ class ClientHanlder():
     def recive_message(self):
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         channel = connection.channel()
-        channel.basic_consume( queue="main" , on_message_callback=self.callback, auto_ack=True)
+        #channel.basic_consume( queue=f'main' , on_message_callback=self.callback, auto_ack=True)
+        channel.basic_consume( queue=f'send#{self.id}' , on_message_callback=self.callback, auto_ack=True)
         channel.start_consuming()
 
 

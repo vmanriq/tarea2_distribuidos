@@ -1,0 +1,1 @@
+{'tipo': 0, 'body': 'funciono ', 'id_receptor': '0', 'nombre_receptor': 'test', 'id_emisor': 2, 'nombre_emisor': 'nice ', 'time': '27/12/2019 22:47:32', 'id_message': 1}

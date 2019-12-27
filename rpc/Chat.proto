@@ -1,20 +1,62 @@
 syntax = "proto3";
+//import "google/protobuf/timestamp.proto";
+//import "google/protobuf/empty.proto";
 
-message Client{
+//Usuario
+message Nombre {
+    string nombre = 1;
+}
+message Id{
+    int32 id = 2;
+}
+message User{
     int32 id = 1;
     string nombre = 2;
 }
-
-message Message{
-    Client emisor = 1;
-    string contenido  = 2;
-    string timestamp = 3;
-    int32 id = 4;
-    Client receptor = 5;
+//Lista de Usuarios
+message UserList{
+    repeated User user = 1;
 }
 
+//flag
+message Flag{
+  bool flag = 1;
+}
+
+//Mensaje
+message Message{
+    User emisor = 1; //quien envia el mensaje
+    string contenido  = 2;
+    string  timestamp = 3;
+    int32 id = 4;
+    User receptor = 5; //quien recibe el mensaje
+}
+
+message NewMessageID{
+    int32 id = 1;
+}
+
+//Lista de Mensajes
+message MessageList{
+    repeated Message msn = 1;
+}
+
+message Pong{
+    string ping = 1;
+}
+
+message Estado{
+    bool estado = 1;
+    string detalle = 2;
+}
 message Empty {}
 
 service Chat{
-    rpc SendMessage(Message) return (Empty){}
+    rpc SendMessage(Message) returns (Flag);
+    rpc ReciveMessage(Id) returns (stream Message);
+    rpc Ping (Pong) returns (Pong);
+    rpc Connection(Nombre) returns (Id);
+    rpc New_message(Id) returns (NewMessageID);
+    rpc Messages(Id) returns (MessageList);
+    rpc ListaDeUsuarios(Id) returns (UserList);
 }

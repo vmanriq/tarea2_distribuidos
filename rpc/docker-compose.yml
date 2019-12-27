@@ -1,0 +1,65 @@
+
+version: "3"
+
+#se definen los servicios
+services:
+
+  server:
+
+    container_name: server
+    #define donde se encuentra el dockerfile der servicio
+    build:
+      context: .
+      dockerfile: DockerServer
+
+
+    command:
+      #tail -F /dev/null
+      python3 -u server.py
+
+    volumes:
+      - ./servidor:/server/log
+
+
+
+  client:
+
+    container_name: client1
+
+    build:
+      context: .
+      dockerfile: DockerClient
+
+
+    command:
+      #bash -c "python3 -u client/client.py " #corre el cliente automaticamente
+      tail -F /dev/null #deja al cliente corriendo por dentras docker exec -i -t "nombre_del_container" bash  para entrar a este
+   #se define que el container puede acceder al localhost de nuestro pc
+
+
+    #network_mode: host
+    #dependencia , el cliente tiene que esperar hasta que el servicio del servidor este listo
+
+
+    depends_on:
+      - server
+
+  client2:
+    container_name: client2
+
+    build:
+      context: .
+      dockerfile: DockerClient
+
+
+    command:
+      #bash -c "python3 -u client/client.py " #corre el cliente automaticamente
+      tail -F /dev/null #deja al cliente corriendo por dentras docker exec -i -t "nombre_del_container" bash  para entrar a este
+
+
+
+    depends_on:
+      - server
+
+
+#se crea una red

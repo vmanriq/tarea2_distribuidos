@@ -15,5 +15,6 @@ RUN apt-get -y install nano
 # PIKA
 RUN pip3 install -U pika
 
+RUN mkdir -p server/logs
 # copia el archiv cliente.py del host hacia una carpeta en el cointainer
 ADD server.py .

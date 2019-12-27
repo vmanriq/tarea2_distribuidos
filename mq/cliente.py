@@ -22,7 +22,7 @@ class Cliente:
         # RECIBE EL ID
         data = self.s.recv(1024)
         self.id = int(data.decode("utf-8"))
-
+        self.s.close()
         # Se declara la cola
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         self.channel = connection.channel()
@@ -35,25 +35,31 @@ class Cliente:
     def callback(self, ch, method, properties, body):
         message = json.loads(body.decode('utf-8'))
         if(message['tipo']==0):
-            print(f"[{message['time']}] {message['nombre_emisor']}#{message['id_emisor']} : {message['body']}")
+            print("\n-----------------------Nuevo mensaje ----------------------------------")
+            print(f"[{message['time']}] {message['nombre_emisor']}#{message['id_emisor']} : {message['body']}\n")
+        # historial mensajes
         elif(message['tipo']==1):
             if(len(message['body'])==0):
                 print(f'No existen mensajes enviados')
             else:
+                print("\n---------------Historial Mensajes -------------------------------")
                 for i in message['body']:
                     print(f"[{i['time']}] {i['nombre_emisor']}#{i['id_emisor']} to {i['nombre_receptor']}#{i['id_receptor']} : {i['body']}")
+                print("")
         elif(message['tipo']==2):
+            print("\n-------------------Listado Usuarios-----------------------------------")
             for i in message['body']:
                 print(f'->{i}')
+            print("")
         else:
             print(f"{message['body']}")
         print('Formato mensaje : !msn:{detinatario}#{id}:{mensaje}')
         print('Formato comando listado : !listado')
         print('formato comando mensajes enviados : !mensajes')
         print('>> Ingrese accion: '),
-        
+
     # comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2==list_user
-    def send_message(self, receptor, message,comando ): 
+    def send_message(self, receptor, message,comando ):
         # Darle formato JSON/Diccionario
         nombre,id = receptor.split("#")
         mensaje = {}
@@ -92,7 +98,7 @@ class Cliente:
         channel = connection.channel()
         channel.basic_consume(queue=f'recive#{self.id}', on_message_callback=self.callback, auto_ack=True)
         channel.start_consuming()
-    
+
 
 
 
@@ -107,8 +113,10 @@ if __name__ == "__main__":
     while True:
         inp  = input()
         ln = inp.split(':')
+        #se pide el listado de usuarios
         if((ln[0] == '!listado') and (len(ln)==1)):
             cliente.send_message(f'{cliente.nombre}#{str(cliente.id)}', '!listado', 2)
+
         elif((ln[0] == '!mensajes') and (len(ln)==1)):
             cliente.send_message('#','!mensajes',1)
         elif((ln[0] == '!salir') and (len(ln)==1)):

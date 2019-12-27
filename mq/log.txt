@@ -1,2 +1,0 @@
-{'tipo': 0, 'body': 'asdasd', 'id_receptor': '0', 'nombre_receptor': 'Manuel', 'id_emisor': 0, 'nombre_emisor': 'Manuel', 'time': '22/12/2019 03:01:59', 'id_message': 1}
-{'tipo': 0, 'body': 'asdasdldsdsdsd', 'id_receptor': '0', 'nombre_receptor': 'Manuel', 'id_emisor': 0, 'nombre_emisor': 'Manuel', 'time': '26/12/2019 16:01:29', 'id_message': 1}

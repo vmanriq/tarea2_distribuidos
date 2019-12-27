@@ -17,7 +17,7 @@ class Id:
     def update(self):
         self.id+=1
     def get(self):
-        return self.id 
+        return self.id
 
 class Users:
     def __init__(self):
@@ -34,7 +34,7 @@ HOST = 'rabbitmqserver'
 RABBIT = 'rabbitmq'
 IDS = Id()
 USERS = Users()
-IDM = id_message() 
+IDM = id_message()
 
 class ClientHanlder():
     def __init__(self, conn, addr, ID, USERS, IDM):
@@ -47,21 +47,22 @@ class ClientHanlder():
         self.conn = conn
         data = self.conn.recv(1024)
 
+
         self.nombre = data.decode('utf-8')
-        
+
         print(f'Este es minombre {self.nombre}')
-        
+
         USERS.addUser(f'{self.nombre}#{str(self.id)}')
         self.USERS = USERS
-        
+
         # ENVIA EL ID ?¡
         self.conn.sendall(str(self.id).encode())
-
+        self.conn.close()
         # CREA LAS COLAS
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         self.channel = connection.channel()
         self.channel.queue_declare(queue= f'recive#{self.id}')
-        
+
         threading.Thread(target=self.recive_message, daemon=True).start()
         #self.recive_message()
 
@@ -71,7 +72,7 @@ class ClientHanlder():
             return True
         else:
             return False
-    
+
     # comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2 ==list_user
     def callback(self, ch, method, properties, body):
         message = json.loads(body.decode('utf-8'))
@@ -113,9 +114,9 @@ class ClientHanlder():
                 'body' : self.USERS.getUsers(),
                 'id_receptor' : message['id_emisor'],
                 'nombre_receptor' : message['nombre_emisor']
-            } 
+            }
         self.send_message(message)
-    
+
     def recive_message(self):
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         channel = connection.channel()

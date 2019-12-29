@@ -108,7 +108,8 @@ if __name__ == "__main__":
     cliente = Cliente(nombre)
     print('Formato mensaje : !msn:{detinatario}#{id}:{mensaje}')
     print('Formato comando listado : !listado')
-    print('formato comando mensajes enviados : !mensajes')
+    print('Formato comando mensajes enviados : !mensajes')
+    print('Formato salir: !salir')
     print('>> Ingrese accion: ')
     while True:
         inp  = input()

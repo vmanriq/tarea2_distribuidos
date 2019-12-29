@@ -53,13 +53,7 @@ class Server(Chat_pb2_grpc.ChatServicer):
         )
 
 
-    def Ping(self,pong,context):
-        respuesta = pong.ping
-        # No se como cambia esto, ahora q puse un diccionario en vez de lista???????
-        print(f'El cliente {respuesta} tiene estos nombres: {self.nombre}')
-        return Chat_pb2.Pong(
-            ping = 'Ni un Poco '
-        )
+
 
     def ReciveMessage(self,id,context):
         ID = id.id

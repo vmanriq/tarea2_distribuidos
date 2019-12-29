@@ -64,9 +64,10 @@ class Client():
 
     def ListaDeUsuarios(self):
         m = self.stub.ListaDeUsuarios(Chat_pb2.Id(id = self.id))
+        print("\n================================ LISTA DE USUARIOS ==================================== ")
         for i in m.user:
-            print(f'-> Nombre Cliente {i.nombre}, Id cliente {i.id}')
-
+            print(f'-> {i.nombre}#{i.id}')
+        print("")
 
 
 
@@ -90,5 +91,8 @@ while True:
         mensaje = ln[2]
        # print(destinatario,mensaje)
         client.SendMessage(mensaje,destinatario)
+    elif((ln[0] == '!salir') and len(ln) == 1):
+        client.channel.close()
+        exit(0)
     else:
         print('>> formato incorrecto, intente de nuevo')

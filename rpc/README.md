@@ -2,7 +2,7 @@
 
 ``` python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. Chat.proto ```
 
-# Para iniciar otro cliente, al hacer esto se ingresa automaticamente al container 
+# Para iniciar otro cliente, al hacer esto se ingresa automaticamente al container
   docker-compose run client bash
 
 # Para entrar a un cliente
@@ -11,8 +11,3 @@
 # Para ejecutar el programa dentro del container
 
   python3 client.py
-
-### To do
-
-+ Arreglar si no hay mensajes enviados, avisar
-+

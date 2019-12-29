@@ -55,7 +55,7 @@ class ClientHanlder():
         USERS.addUser(f'{self.nombre}#{str(self.id)}')
         self.USERS = USERS
 
-        # ENVIA EL ID ?¡
+        # ENVIA EL ID
         self.conn.sendall(str(self.id).encode())
         self.conn.close()
         # CREA LAS COLAS
@@ -73,6 +73,7 @@ class ClientHanlder():
         else:
             return False
 
+    # Función que lee los mensajes recibidos
     # comando e {0,1,2} : 0 = send_message ; 1 == historial ; 2 ==list_user
     def callback(self, ch, method, properties, body):
         message = json.loads(body.decode('utf-8'))
@@ -120,7 +121,6 @@ class ClientHanlder():
     def recive_message(self):
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         channel = connection.channel()
-        #channel.basic_consume( queue=f'main' , on_message_callback=self.callback, auto_ack=True)
         channel.basic_consume( queue=f'send#{self.id}' , on_message_callback=self.callback, auto_ack=True)
         channel.start_consuming()
 

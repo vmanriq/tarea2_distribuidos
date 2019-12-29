@@ -33,10 +33,9 @@ class Client():
                 contenido = contenido,
                 timestamp = time.strftime("%c"),
                 receptor = Chat_pb2.User(
-                    id = int(destino.split('#')[1]) ,# que aca sea estilo destino.id
-                    nombre = destino.split('#')[0] # destino.nombre o algo asi
+                    id = int(destino.split('#')[1]) ,
+                    nombre = destino.split('#')[0]
                 ),
-                # Esto debería tener lock????
                 id = self.stub.New_message(Chat_pb2.Id(id = self.id)).id
             ))
             if not response.flag:
@@ -79,6 +78,7 @@ while True:
     print('Formato mensaje : !msn:{detinatario}#{id}:{mensaje}')
     print('Formato comando listado : !listado')
     print('formato comando mensajes enviados : !mensajes')
+    print('formato comando salir : !salir')
     print('>> Ingrese accion: ',end = '')
     inp  = input()
     ln = inp.split(':')

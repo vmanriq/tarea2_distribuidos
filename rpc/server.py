@@ -22,7 +22,7 @@ class Server(Chat_pb2_grpc.ChatServicer):
         self.enviados[new_id] = [] # se crea llave = id , valor = lista de mensajes enviados
         self.recibidos[new_id] = [] #se crea lista para mensaje recibidos
 
-        self.user_id+=1 #se deberia usar locks aca (?)
+        self.user_id+=1
 
 
         return Chat_pb2.Id(id = new_id)
@@ -63,17 +63,20 @@ class Server(Chat_pb2_grpc.ChatServicer):
 
     def Messages(self,id,context):
         r = Chat_pb2.MessageList()
-        f = open("log/log.txt","r")
-        for i in f:
-            l = i.split("@")
-            if( int(l[1][1:-1].split("#")[1]) == id.id ):
-                men = l[5][1:-1].split(";")
-                r.msn.append(Chat_pb2.Message(
-                                id = int(men[0]),
-                                contenido = men[1],
-                                timestamp = men[2]
-                ))
-        f.close()
+        try:
+            f = open("log/log.txt","r")
+            for i in f:
+                l = i.split("@")
+                if( int(l[1][1:-1].split("#")[1]) == id.id ):
+                    men = l[5][1:-1].split(";")
+                    r.msn.append(Chat_pb2.Message(
+                                    id = int(men[0]),
+                                    contenido = men[1],
+                                    timestamp = men[2]
+                    ))
+            f.close()
+        except:
+            r.msn.append(Chat_pb2.Empty())
         return r
 
     def ListaDeUsuarios(self,id,context):

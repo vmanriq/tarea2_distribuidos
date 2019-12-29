@@ -11,7 +11,7 @@ PORT = 5020
 
 
 class Cliente:
-    """docstring for Cliente."""
+
     def __init__(self, nombre):
         # INIT
         self.nombre = nombre
@@ -26,7 +26,6 @@ class Cliente:
         # Se declara la cola
         connection =  pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
         self.channel = connection.channel()
-        #self.channel.queue_declare(queue= f'main')
         self.channel.queue_declare(queue= f'send#{self.id}')
         threading.Thread(target=self.recive_message, daemon=True).start()
 
@@ -90,7 +89,6 @@ class Cliente:
             }
 
         msn = json.dumps(mensaje)
-        #self.channel.basic_publish(exchange='', routing_key="main",body=msn)
         self.channel.basic_publish(exchange='', routing_key=f'send#{self.id}',body=msn)
 
     def recive_message(self):

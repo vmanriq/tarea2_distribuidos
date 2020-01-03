@@ -14,8 +14,9 @@ Para la ejecución de la primera actividad es necesario situarse en el directori
 > sudo docker-compose up
 
 # Iniciar Clientes
-  * Para entrar a uno de los dos clientes (desde otra consola)
-  > docker exec -it client_{1,2} bash
+  * Para entrar a uno de los dos clientes (desde otra consola) en consolas separadas 
+  > docker exec -it client_1 bash #para entrar al primer cliente
+  > docker exec -it client_2 bash #para entrar al segundo cliente 
   * Para ejecutar el código
   > python3 client.py
 

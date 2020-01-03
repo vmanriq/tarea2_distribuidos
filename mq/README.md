@@ -16,8 +16,14 @@ Para la ejecución de la primera actividad es necesario situarse en el directori
 # Iniciar Clientes
   * Para entrar a uno de los dos clientes (desde otra consola), cada uno en una terminal separada 
   > docker exec -it client1 bash
+
+
   > docker exec -it client2 bash
-  * Para ejecutar el código
+  
+  
+  * Para ejecutar el código, en cada consola se debe hacer 
+  
+  
   > python3 cliente.py
 
 # Para iniciar otro cliente
